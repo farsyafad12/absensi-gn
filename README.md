@@ -4,7 +4,7 @@
 <ul>
     <li>Jalankan Command Di Bawah Ini : <br> </li>
     <li> > git clone https://github.com/farsyafad12/absensi-gn</li>
-    <li> > cd hospitalMS</li>
+    <li> > cd absensi-gn</li>
     <li> > composer install or composer update</li>
     <li> > cp .env.example .env <span style="color: red;">Atau</span> copy .env.example .env</li>
     <li> > Set up .env file</li>
