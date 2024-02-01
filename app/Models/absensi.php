@@ -24,4 +24,14 @@ class absensi extends Model
     {
         return $this->belongsTo(data_siswa::class, 'id_siswa', 'id_siswa');
     }
+
+    public function kehadiran()
+    {
+        return $this->belongsTo(kehadiran::class, 'id_kehadiran', 'id_kehadiran');
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(kelas::class, 'id_kelas', 'id_kelas');
+    }
 }

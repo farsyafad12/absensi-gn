@@ -25,18 +25,34 @@ class tingkatController extends Controller
 
     public function update_tingkat(Request $request, $data_tingkat)
     {
+        // Validasi request data
+        $validator = Validator::make($request->all(), [
+            'nama_tingkat' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            Session::flash('message-failed', 'Maaf, Semua Kolom Harus Diisi !');
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $tingkat = tingkat::find($data_tingkat);
         $tingkat->update($request->all());
+
         return redirect()->route('data_tingkat')->with('message', 'Berhasil Update Data Kelas !');
     }
     public function tingkat_delete($data_tingkat)
     {
         $tingkat = tingkat::find($data_tingkat);
         if ($tingkat) {
+            $kelas_to_delete = Kelas::where('id_tingkat', $data_tingkat)->get();
+            foreach ($kelas_to_delete as $kelas) {
+                data_siswa::where('id_kelas', $kelas->id_kelas)->delete();
+            }
             Kelas::where('id_tingkat', $data_tingkat)->delete();
-            data_siswa::where('id_tingkat', $data_tingkat)->delete();
             $tingkat->delete();
-            return redirect()->route('data_tingkat')->with('message', 'Berhasil Menghapus Kelas');
+            return redirect()->route('data_tingkat')->with('message', 'Berhasil Menghapus Data Tingkat');
         } else {
             return redirect()->route('data_tingkat')->with('message-failed', 'Gagal Menghapus Kelas, Harap Coba Lagi');
         }

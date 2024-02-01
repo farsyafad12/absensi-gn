@@ -8,18 +8,18 @@
             <p class="mb-4">Mencari Data Siswa Lebih Mudah Dengan Filter</p>
             <div class="container row">
                 <div class="col-6">
-                    <select name="kelas" id="kelas" class="form-select" onchange="filterData()">
+                    <select name="kelas" id="kelas" class="form-select" onchange="filterkelas()">
                         <option value="" selected>-- Semua Kelas --</option>
                         @foreach ($kelasList as $kl)
-                            <option value="{{ $kl->kelas }}">{{ $kl->kelas }}</option>
+                            <option value="{{ $kl->id_kelas }}">{{ $kl->kelas }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-6">
-                    <select name="tingkat" id="tingkat" class="form-select" onchange="filterData()">
+                    <select name="tingkat" id="tingkat" class="form-select" onchange="filtertingkat()">
                         <option value="" selected>-- Semua Tingkat --</option>
                         @foreach ($tingkat as $tk)
-                            <option value="{{ $tk->nama_tingkat }}">{{ $tk->nama_tingkat }}</option>
+                            <option value="{{ $tk->id_tingkat }}">{{ $tk->nama_tingkat }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -28,8 +28,7 @@
                 <div class="col-4 mt-3">
                     <label for="tanggal-kehadiran">Tanggal Absen :</label>
                     <input class="form-control" id="tanggal-kehadiran" type="date" name="tanggal-kehadiran"
-                        onchange="filterData()" />
-                        <button onclick="filterData()">kirim</button>
+                        onchange="filtertanggal()" onload="filtertanggal()" />
                 </div>
             </div>
         </div>
@@ -43,82 +42,26 @@
                         Siswa</a>
                 </div>
                 <div class="card-body p-4">
-                    <div class="group w-100 mb-4">
+                    {{-- <div class="group w-100 mb-4">
                         <i class="ti ti-search icon"></i>
                         <input type="search" class="form-search w-100" id="search" onkeyup="search()"
                             placeholder="Cari Data" title="Cari Data Dari Tabel">
-                    </div>
+                    </div> --}}
                     <div class="table-responsive">
-                        <table class="table text-nowrap mb-0 align-middle" id="table">
-                            <thead class="text-dark fs-4">
-                                <tr>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">No</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Nama Lengkap</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Kelas</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Jam Masuk</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Jam Keluar</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Status</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Aksi</h6>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($siswa as $s)
-                                    <tr class="data" data-kelas="{{ $s->kelas->kelas }}"
-                                        data-tingkat="{{ $s->kelas->tingkat->nama_tingkat }}">
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">{{ $loop->iteration }}</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-1">{{ $s->nama_siswa }}</h6>
-                                            <span class="fw-normal">{{ $s->kelas->tingkat->nama_tingkat }}</span>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-normal">{{ $s->kelas->kelas }}</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-normal">-</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-normal">-</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="badge bg-primary rounded-3 fw-semibold">Hadir</span>
-                                            </div>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <button type="button" class="btn btn-warning m-1 editBtn"
-                                                value="{{ $s->id_siswa }}">Ubah Status</button>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center">Tidak Ada Data Siswa Yang Tersedia</td>
-                                    </tr>
-                                @endforelse
-
-                            </tbody>
-                        </table>
+                        {{-- @include('data-page.list-data-kehadiran') --}}
+                        <div id="hasilFilter">
+                            <p class="text-danger text-center">Text Ini Akan Hilang Jika Tidak Ada Error dalam beberapa
+                                detik, Jika Masih Muncul Coba Muat Ulang Halaman Atau Hubungi Pengelola.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <script>
+        var kelasTerpilih;
+        var tanggalTerpilih;
+
         document.addEventListener('DOMContentLoaded', function() {
             var todayDateInput = document.getElementById('tanggal-kehadiran');
             var today = new Date().toISOString().split('T')[0];
@@ -128,87 +71,55 @@
                 'type': 'button'
             });
             todayDateInput.value = today;
-            //var tanggalTerpilih = todayDateInput.value;
-            //document.getElementById('tanggal').value = tanggalTerpilih;
-        });
-    </script>
-    
-    <!--<script>
-        $(document).ready(function() {
-            var submitButton = $('#submitBtn');
-
-            $(document).on('click', '.editBtn', function() {
-                var id_siswa = $(this).val();
-                $('#modal-kehadiran').modal('show');
-
-                $.ajax({
-                    type: "GET",
-                    url: "/kehadiran/" + id_siswa,
-                    success: function(response) {
-                        $('#nama_siswa').val(response.student.nama_siswa);
-                        $('#id_kelas').val(response.student.id_kelas);
-                        $('#id_siswa').val(id_siswa);
-                        submitButton.prop({
-                            'disabled': false,
-                            'type': 'submit'
-                        });
-
-                        if (response.kehadiran.length > 0) {
-                            var firstKehadiran = response.kehadiran[0];
-                            //console.log(firstKehadiran.id_kehadiran);
-                            $('input[name="id_kehadiran"][value="' + firstKehadiran
-                                .id_kehadiran + '"]').prop(
-                                'checked', true);
-                            $('#jam_masuk').val(firstKehadiran.jam_masuk);
-                            $('#tanggal').val(firstKehadiran.tanggal);
-                            $('#jam_keluar').val(firstKehadiran.jam_keluar);
-                            $('#keterangan').val(firstKehadiran.keterangan);
-                        } else {
-                            console.log("No attendance records found for the student");
-                        }
-                    }
-                });
-            });
-
-            $('#modal-kehadiran').on('hidden.bs.modal', function() {
-                $('#nama_siswa').val('');
-                $('#id_kelas').val('');
-                $('#id_siswa').val('');
-                $('input[name="id_kehadiran"]').prop('checked', false);
-                $('#jam_masuk').val('');
-                $('#jam_keluar').val('');
-                $('#keterangan').val('');
-
-                submitButton.prop({
-                    'disabled': true,
-                    'type': 'button'
-                });
-            });
-        });
-    </script>-->
-    <script>
-        function filterData() {
-          var tanggal = $("#tanggal-kehadiran").val();
-      
-          // Kirim permintaan AJAX ke endpoint Laravel
-          $.ajax({
-            url: '/data-kehadiran/filter',
-            type: 'GET',
-            data: { tanggal: tanggal },
-            success: function(response) {
-              // Perbarui tabel dengan data yang diterima
-              $('#tabelAbsensi').html(response);
-              console.log(response.tanggal);
-            },
-            error: function(error) {
-              console.log(error);
+            kelasTerpilih = document.getElementById('kelas').value;
+            tanggalTerpilih = document.getElementById('tanggal-kehadiran').value;
+            if (kelasTerpilih !== undefined && tanggalTerpilih !== undefined) {
+                filterAbsensi();
             }
-          });
+        });
+
+        function filterkelas() {
+            kelasTerpilih = document.getElementById('kelas').value;
+            console.log(kelasTerpilih);
+            if (kelasTerpilih !== undefined && tanggalTerpilih !== undefined) {
+                filterAbsensi();
+            }
         }
-      </script>
+
+        function filtertanggal() {
+            tanggalTerpilih = document.getElementById('tanggal-kehadiran').value;
+            console.log(tanggalTerpilih);
+            if (kelasTerpilih !== undefined && tanggalTerpilih !== undefined) {
+                filterAbsensi();
+            }
+        }
+    </script>
+
+    <script>
+        function filterAbsensi() {
+            console.log('data telah diproses ....');
+            var tanggal = $('#tanggal-kehadiran').val();
+            var kelas = $('#kelas').val();
+            var tingkat = $('#tingkat').val();
+
+            $.ajax({
+                url: '/filter-absensi',
+                type: 'GET',
+                data: {
+                    tanggal: tanggal,
+                    kelas: kelas,
+                },
+                success: function(response) {
+                    $('#hasilFilter').html(response);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+    </script>
 @endsection
 
 @section('inlinefile')
-<script src="/assets/js/sidebarmenu.js"></script>
-<script src="/assets/js/searchmenu.js"></script>
+    <script src="/assets/js/sidebarmenu.js"></script>
 @endsection

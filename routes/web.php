@@ -10,6 +10,8 @@ use App\Http\Controllers\kelasController;
 use App\Http\Controllers\tingkatController;
 use App\Http\Controllers\generatorqrcodeController;
 use App\Http\Controllers\scanqrController;
+// use App\Http\Controllers\testController;
+// use PHPUnit\Event\Code\Test;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,18 +23,33 @@ use App\Http\Controllers\scanqrController;
 | be assigned to the "web" middleware group. Make something great!
 |--------------------------------------------------------------------------
 */
+// Route::get('/bismillah', [testController::class, 'test'])->name('test_controller');
+
+
+
+//get data area
+Route::get('/hitung-absen-pertanggal', [SiswaController::class, 'tampilkanDataAbsensi'])->name('data_absen_pertanggal');
+Route::get('laporan/{year}/{month}/{kelas}', [SiswaController::class, 'laporan_data'])->name('laporan_data');
+Route::get('laporan', [SiswaController::class, 'laporan'])->name('laporan');
+
 
 //Other Area Setting
 Route::get('generate-qr', [generatorqrcodeController::class, 'generate_qr'])->name('qr_siswa');
 Route::get('generate', [generatorqrcodeController::class, 'generate'])->name('generate');
-Route::get('laporan', [SiswaController::class, 'laporan'])->name('laporan');
-Route::get('laporan/{year}/{month}', [SiswaController::class, 'laporan_data'])->name('laporan_data');
+
 
 //Scan Masuk Dan Keluar Kehadiran
 Route::get('absen', [scanqrController::class, 'scan'])->name('scan');
 Route::get('absen/masuk', [scanqrController::class, 'scan_masuk'])->name('scan_masuk');
 Route::get('absen/keluar', [scanqrController::class, 'scan_keluar'])->name('scan_keluar');
-Route::get('absen/cek-data/{nisn}', [scanqrController::class, 'check_siswa'])->name('cek_siswa');
+Route::post('absen/status-data', [scanqrController::class, 'check_siswa'])->name('cek_siswa');
+
+//kehadiran Area Setting
+Route::get('data-kehadiran', [kehadiranController::class, 'data_kehadiran'])->name('data_kehadiran');
+Route::get('data-kehadiran/filter', [kehadiranController::class, 'kehadiran_filter'])->name('kehadiran_filter');
+Route::get('filter-absensi', [kehadiranController::class, 'filter_absensi'])->name('filter_absensi');
+Route::get('kehadiran/{id}', [kehadiranController::class, 'buat_kehadiran'])->name('buat_kehadiran');
+Route::put('update-kehadiran', [kehadiranController::class, 'kirim_kehadiran'])->name('kirim_kehadiran');
 
 //Tingkat Area Setting
 Route::get('edit-tingkat/{tingkat}', [tingkatController::class, 'edit_tingkat'])->name('tingkat_edit');
@@ -49,12 +66,6 @@ Route::get('edit-kelas/{kelas}', [kelasController::class, 'edit_kelas'])->name('
 Route::put('edit-kelas/action/{kelas}', [kelasController::class, 'update_kelas'])->name('kelas_update');
 Route::delete('data-kelas/delete/{kelas}', [kelasController::class, 'kelas_delete'])->name('kelas_delete');
 Route::post('tambah-kelas/kelas-baru', [kelasController::class, 'buat_kelas'])->name('buat_kelas');
-
-//kehadiran Area Setting
-Route::get('data-kehadiran', [kehadiranController::class, 'data_kehadiran'])->name('data_kehadiran');
-Route::get('data-kehadiran/filter', [kehadiranController::class, 'kehadiran_filter'])->name('kehadiran_filter');
-Route::get('kehadiran/{id}', [kehadiranController::class, 'buat_kehadiran'])->name('buat_kehadiran');
-Route::put('update-kehadiran', [kehadiranController::class, 'kirim_kehadiran'])->name('kirim_kehadiran');
 
 // Siswa Area Settings
 Route::get('edit-siswa/{siswa}', [MuridController::class, 'edit_siswa'])->name('siswa_edit');

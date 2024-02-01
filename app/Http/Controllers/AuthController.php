@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use App\Models\data_siswa;
 use App\Models\absensi;
 use App\Models\kelas;
@@ -19,6 +20,9 @@ class AuthController extends Controller
     public function register()
     {
         $judul = 'Daftar Akun';
+        if (auth()->check()) {
+            return redirect()->route('dashboard');
+        }
         return view('auth/register', ['title' => $judul]);
     }
 
@@ -31,6 +35,8 @@ class AuthController extends Controller
                 'min:8',
                 'regex:/^(?=.*[A-Z])(?=.*\d).+$/',
             ],
+            'email' => 'required',
+            'username' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -96,6 +102,7 @@ class AuthController extends Controller
         $user = User::count();
         $absensi = absensi::orderBy('tanggal', 'desc')->get();
         $today = Carbon::now()->toDateString();
+
         $statusHadir = Absensi::where('id_kehadiran', 1)
             ->whereDate('tanggal', $today)
             ->count();
@@ -105,10 +112,28 @@ class AuthController extends Controller
         $statusIzin = Absensi::where('id_kehadiran', 3)
             ->whereDate('tanggal', $today)
             ->count();
-        $statusAlpha = Absensi::where('id_kehadiran', 4)
-            ->whereDate('tanggal', $today)
-            ->count();
-        return view('dashboard', ['title' => $judul], compact('siswa', 'kelas', 'user', 'absensi', 'statusHadir', 'statusSakit', 'statusIzin', 'statusAlpha'));
-    }
 
+        $siswaAlpha = DB::table('tb_siswa')
+            ->leftJoin('tb_absensi', function ($join) use ($today) {
+                $join->on('tb_siswa.id_siswa', '=', 'tb_absensi.id_siswa')
+                    ->whereDate('tb_absensi.tanggal', '=', $today);
+            })
+            ->whereNull('tb_absensi.id_siswa')
+            ->pluck('tb_siswa.id_siswa')
+            ->toArray();
+
+        $statusAlpha = count($siswaAlpha);
+
+        return view('dashboard', [
+            'title' => $judul,
+            'siswa' => $siswa,
+            'kelas' => $kelas,
+            'user' => $user,
+            'absensi' => $absensi,
+            'statusHadir' => $statusHadir,
+            'statusSakit' => $statusSakit,
+            'statusIzin' => $statusIzin,
+            'statusAlpha' => $statusAlpha,
+        ]);
+    }
 }

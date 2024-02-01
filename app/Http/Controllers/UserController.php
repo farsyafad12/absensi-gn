@@ -41,9 +41,9 @@ class UserController extends Controller
         } else {
             if ($user) {
                 $user->delete();
-                return redirect()->route('user_detail')->with('message', 'Berhasil Menghapus Pengguna');
+                return redirect()->route('user_detail')->with('message', 'Berhasil Menghapus Akun Pengelola');
             } else {
-                return redirect()->route('user_detail')->with('message-failed', 'Gagal Menghapus Pengguna, Harap Coba Lagi');
+                return redirect()->route('user_detail')->with('message-failed', 'Gagal Menghapus Akun Pengelola, Harap Coba Lagi');
             }
         }
     }

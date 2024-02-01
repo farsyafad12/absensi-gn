@@ -6,8 +6,13 @@
             <div class="card w-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5>Daftar Pengelola</h5>
-                    <a href="{{ route('user_new') }}" class="btn btn-primary"><i class="ti ti-plus me-2"></i>Tambah
-                        Pengelola</a>
+                    @if (Auth::check() && (Auth::user()->role == 'administrator'))
+                        <a href="{{ route('user_new') }}" class="btn btn-primary"><i class="ti ti-plus me-2"></i>Tambah
+                            Pengelola</a>
+                    @else
+                        <button type="button" class="btn btn-primary" disabled><i class="ti ti-plus me-2"></i>Tambah
+                            Pengelola</button>
+                    @endif
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -54,7 +59,8 @@
                                             @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'administrator'))
                                                 @if ($u->status !== 'selamanya')
                                                     @if (Auth::check() && Auth::user()->role == 'administrator')
-                                                        <form id="form-delete" action="{{ route('user_delete', $u->id) }}" method="post">
+                                                        <form id="form-delete" action="{{ route('user_delete', $u->id) }}"
+                                                            method="post">
                                                         @else
                                                             <form id="form-delete" action="#">
                                                     @endif

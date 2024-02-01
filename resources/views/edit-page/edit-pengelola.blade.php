@@ -57,7 +57,8 @@
                     <div class="mb-3">
                         <label for="password" class="form-label">Password Baru</label>
                         @if ($user->status !== 'selamanya')
-                            <input type="password" class="form-control" name="password" id="password" pattern="(?=.*[A-Z])(?=.*\d).{8,}" title="Minimal 8 Karakter, 1 Huruf Besar Dan 1 Angka"
+                            <input type="password" class="form-control" name="password" id="password"
+                                pattern="(?=.*[A-Z])(?=.*\d).{8,}" title="Minimal 8 Karakter, 1 Huruf Besar Dan 1 Angka"
                                 placeholder="Masukkan Password Baru [ Tidak Wajib ]">
                         @else
                             <input type="password" class="form-control" name="password" id="password"

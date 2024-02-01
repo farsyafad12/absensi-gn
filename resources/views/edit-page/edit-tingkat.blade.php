@@ -11,7 +11,7 @@
                                         @method('put')
                                         <div class="mb-3">
                                             <label for="nama_tingkat" class="form-label">Nama Tingkat</label>
-                                            <input type="text" id="nama_tingkat" name="nama_tingkat" class="form-control" placeholder="Masukkan Nama Tingkat" value="{{ $tingkat->nama_tingkat }}">
+                                            <input type="text" id="nama_tingkat" name="nama_tingkat" class="form-control" placeholder="Masukkan Nama Tingkat" value="{{ $tingkat->nama_tingkat }}" required>
                                         </div>
                                         <button type="button" class="btn btn-danger me-2" onclick="window.history.back()">Batal</button>
                                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>

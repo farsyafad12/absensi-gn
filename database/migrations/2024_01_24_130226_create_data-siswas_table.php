@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id('id_siswa');
             $table->string('nama_siswa');
             $table->string('id_kelas');
-            $table->string('nisn')->unique();
+            $table->string('nisn');
             $table->enum('jenis_kelamin', ['Perempuan', 'Laki-Laki']); 
             $table->timestamps();
 
@@ -55,10 +55,9 @@ return new class extends Migration
             $table->string('id_kelas');
             $table->string('id_kehadiran');
             $table->date('tanggal');
-            $table->time('jam_masuk')->nullable();            ;
-            $table->time('jam_keluar')->nullable();            ;
-            $table->string('keterangan')->nullable();            ;
-
+            $table->time('jam_masuk')->nullable();
+            $table->time('jam_keluar')->nullable();
+            $table->string('keterangan')->nullable();
             $table->index(['id_siswa', 'id_kelas', 'id_kehadiran'], 'idx_tb_absensi');
         });
 
