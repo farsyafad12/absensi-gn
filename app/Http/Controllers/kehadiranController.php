@@ -53,7 +53,7 @@ class kehadiranController extends Controller
 
         $validator = Validator::make($request->all(), [
             'id_kelas' => 'required',
-            'nama_siswa' => 'required',
+            'id_siswa' => 'required',
             'id_kehadiran' => 'required',
             'tanggal' => 'required|date'
         ]);
@@ -81,10 +81,32 @@ class kehadiranController extends Controller
                 return redirect()->route('data_kehadiran')->with('message', 'Berhasil Menambahkan Status Kehadiran!');
             }
         } else {
-            return redirect()->route('data_kehadiran')->with('message', 'Siswa tidak ditemukan!');
+            return redirect()->route('data_kehadiran')->with('message', 'Siswa tidak ditemukan, Silahkan Coba Lagi !');
         }
     }
 
+
+    public function filter_absensi(Request $request)
+    {
+        $tanggal = $request->input('tanggal');
+        $kelas = $request->input('kelas');
+        // $absensi = absensi::where('id_kelas', $kelas)
+        // ->whereDate('tanggal', $tanggal) 
+        // ->get();
+        $absensiData = Absensi::where('id_kelas', $kelas)
+            ->whereDate('tanggal', $tanggal)
+            ->get();
+        $siswaData = data_siswa::where('id_kelas', $kelas)
+            ->whereNotIn('id_siswa', function ($query) use ($kelas, $tanggal) {
+                $query->select('id_siswa')
+                    ->from('tb_absensi')
+                    ->where('id_kelas', $kelas)
+                    ->whereDate('tanggal', $tanggal);
+            })
+            ->get();
+
+        return view('data-page/list-kehadiran', ['absensiData' => $absensiData, 'siswaData' => $siswaData], compact('tanggal'));
+    }
 
 
     // public function kehadiran_filter(Request $request)
@@ -96,29 +118,4 @@ class kehadiranController extends Controller
 
     //     return view('data-page/data-kehadiran', ['dataAbsensi' => $dataAbsensi]);
     // }
-
-    public function filter_absensi(Request $request)
-    {
-        $tanggal = $request->input('tanggal');
-        $kelas = $request->input('kelas');
-
-        // $absensi = absensi::where('id_kelas', $kelas)
-        // ->whereDate('tanggal', $tanggal) 
-        // ->get();
-
-        $absensiData = Absensi::where('id_kelas', $kelas)
-            ->whereDate('tanggal', $tanggal)
-            ->get();
-
-        $siswaData = data_siswa::where('id_kelas', $kelas)
-            ->whereNotIn('id_siswa', function ($query) use ($kelas, $tanggal) {
-                $query->select('id_siswa')
-                    ->from('tb_absensi')
-                    ->where('id_kelas', $kelas)
-                    ->whereDate('tanggal', $tanggal);
-            })
-            ->get();
-
-        return view('test', ['absensiData' => $absensiData, 'siswaData' => $siswaData], compact('tanggal'));
-    }
 }

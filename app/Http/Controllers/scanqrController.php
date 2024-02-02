@@ -20,12 +20,102 @@ class scanqrController extends Controller
 
     public function scan_masuk()
     {
-        $time = Carbon::now();
-        $timenow = $time->format('Y-m-d H:i:s');
         $status = 'Masuk';
         $judul = 'Scan Masuk Qr Code Kehadiran';
-        return view('scan-kehadiran/masuk', ['title' => $judul], ['status' => $status], compact('timenow'));
+        return view('scan-kehadiran/masuk', ['title' => $judul], ['status' => $status]);
     }
+
+    public function masuk_cek(Request $request)
+    {
+        $nisn = $request->input('qrData');
+        $siswa = data_siswa::where('nisn', $nisn)->first();
+        $kelas = $siswa->kelas->kelas;
+        $currentDateTime = Carbon::now();
+        $tanggal = $currentDateTime->format('Y-m-d');
+        $jamMasuk = $currentDateTime->format('H:i');
+
+        if ($siswa) {
+            $absensi = absensi::where('id_siswa', $siswa->id_siswa)
+                ->where('tanggal', $tanggal)
+                ->first();
+            if ($absensi) {
+                if ($absensi->jam_masuk !== null) {
+                    $message = "Anda Telah Melakukan Absen Sebelumnya";
+                    $jamsiswa = $absensi->jam_masuk;
+                    $jamPulang = $absensi->jam_keluar;
+                } else {
+                    $absensi->id_kehadiran = 1;
+                    $absensi->jam_masuk = $jamMasuk;
+                    $absensi->save();
+                    $message = "Berhasil Update Data Kehadiran!";
+                    $jamsiswa = $absensi->jam_masuk;
+                    $jamPulang = $absensi->jam_keluar;
+                }
+            } else {
+                $absensi = new absensi();
+                $absensi->id_siswa = $siswa->id_siswa;
+                $absensi->id_kelas = $siswa->id_kelas;
+                $absensi->id_kehadiran = 1;
+                $absensi->tanggal = $tanggal;
+                $absensi->jam_masuk = $jamMasuk;
+                $absensi->save();
+                $message = "Berhasi Tambah Kehadiran !";
+                $jamsiswa = $absensi->jam_masuk;
+                $jamPulang = $absensi->jam_keluar;
+            }
+
+            return response()->json(['message' => 'Data QR Code ditemukan', 'siswa' => $siswa, 'masuk' => $jamsiswa, 'pulang' => $jamPulang, 'kelas' => $kelas, 'pesan' => $message]);
+        } else {
+            $message = "Maaf, Data Siswa / Data QR Code Tidak Ditemukan / Format QR Code Salah !";
+            return response()->json(['message' => 'Gagal Membaca QR Code', 'pesan' => $message]);
+        }
+    }
+
+    public function pulang_cek(Request $request)
+    {
+        $nisn = $request->input('qrData');
+        $siswa = data_siswa::where('nisn', $nisn)->first();
+        $kelas = $siswa->kelas->kelas;
+        $currentDateTime = Carbon::now();
+        $tanggal = $currentDateTime->format('Y-m-d');
+        $jamPulang = $currentDateTime->format('H:i');
+
+        if ($siswa) {
+            $absensi = absensi::where('id_siswa', $siswa->id_siswa)
+                ->where('tanggal', $tanggal)
+                ->first();
+            if ($absensi) {
+                if ($absensi->jam_masuk == null) {
+                    $message = "Anda Belum Melakukan Absen Masuk";
+                    $jamsiswa = "--";
+                    $jamMasuk = "--";
+                } else {
+                    if ($absensi->jam_keluar == null) {
+                        $absensi->id_kehadiran = 1;
+                        $absensi->jam_keluar = $jamPulang;
+                        $absensi->save();
+                        $message = "Berhasil Update Data Kehadiran!";
+                        $jamMasuk = $absensi->jam_masuk;
+                        $jamsiswa = $absensi->jam_keluar;
+                    } else {
+                        $jamMasuk = $absensi->jam_masuk;
+                        $jamsiswa = $absensi->jam_keluar;
+                        $message = "Anda Sudah Melakukan Absen Pulang Sebelumnya";
+                    }
+                }
+            } else {
+                $jamMasuk = "--";
+                $jamsiswa = "--";
+                $message = "Silahkan Absen Masuk Terlebih Dahulu";
+            }
+
+            return response()->json(['message' => 'Data QR Code ditemukan', 'siswa' => $siswa, 'masuk' => $jamMasuk, 'pulang' => $jamsiswa, 'kelas' => $kelas, 'pesan' => $message]);
+        } else {
+            $message = "Maaf, Data Siswa / Data QR Code Tidak Ditemukan / Format QR Code Salah !";
+            return response()->json(['message' => 'Gagal Membaca QR Code', 'pesan' => $message]);
+        }
+    }
+
 
     public function scan_keluar()
     {
@@ -34,50 +124,5 @@ class scanqrController extends Controller
         $timenow = $time->format('Y-m-d H:i:s');
         $judul = 'Scan Keluar Qr Code Kehadiran';
         return view('scan-kehadiran/keluar', ['title' => $judul], ['status' => $status], compact('timenow'));
-    }
-
-    public function checkSiswa(Request $request)
-    {
-        $nisn = $request->input('nisn');
-
-        if (!$nisn) {
-            return response()->json(['message' => 'NISN tidak ditemukan'], 404);
-        }
-
-        $siswa = data_siswa::where('nisn', $nisn)->first();
-
-        if (!$siswa) {
-            return response()->json(['message' => 'Siswa tidak ditemukan'], 404);
-        }
-
-        $idSiswa = $siswa->id;
-        $idKelas = $siswa->id_kelas;
-
-        $currentDateTime = Carbon::now();
-        $tanggal = $currentDateTime->format('Y-m-d');
-        $jamMasuk = $currentDateTime->format('H:i');
-
-        $kehadiran = absensi::where('id_siswa', $idSiswa)->where('tanggal', $tanggal)->first();
-
-        if ($kehadiran) {
-            $kehadiran->update([
-                'id_kelas' => $idKelas,
-                'id_kehadiran' => 1,
-                'tanggal' => $tanggal,
-                'jam_masuk' => $jamMasuk,
-            ]);
-
-            return response()->json(['message' => 'Kehadiran berhasil diupdate', 'nisn' => $nisn]);
-        } else {
-            absensi::create([
-                'id_siswa' => $idSiswa,
-                'id_kelas' => $idKelas,
-                'id_kehadiran' => 1,
-                'tanggal' => $tanggal,
-                'jam_masuk' => $jamMasuk,
-            ]);
-
-            return response()->json(['message' => 'Kehadiran berhasil ditambahkan', 'nisn' => $nisn]);
-        }
     }
 }

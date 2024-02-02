@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Add this meta tag in the head section of your HTML document -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title }} | Halaman Kehadiran | SIT Gema Nurani</title>
     @include('layouts.head')
@@ -48,6 +47,7 @@
     </div>
     @include('layouts.file')
     <script type="text/javascript" src="/assets/js/zxing.js"></script>
+    @yield('script')
     <script>
         function updateDateTime() {
             var now = new Date();
@@ -63,87 +63,5 @@
         updateDateTime();
         setInterval(updateDateTime, 1000);
     </script>
-    <script type="text/javascript">
-        window.addEventListener('load', function() {
-            let selectedDeviceId;
-            const codeReader = new ZXing.BrowserMultiFormatReader()
-            console.log('Scanner QR Code Telah Aktif')
-
-            function sendDataToLaravel(data) {
-                const csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-                $.ajax({
-                    url: '/absen/status-data',
-                    method: 'POST',
-                    data: {
-                        nisn: data
-                    },
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    success: function(response) {
-                        console.log('Data sent successfully:', response);
-                        // Handle success response, if needed
-                    },
-                    error: function(error) {
-                        console.error('Error sending data:', error);
-                        // Handle error, if needed
-                    }
-                });
-            }
-
-            codeReader.listVideoInputDevices()
-                .then((videoInputDevices) => {
-                    const sourceSelect = document.getElementById('sourceSelect')
-                    selectedDeviceId = videoInputDevices[0].deviceId
-
-                    if (videoInputDevices.length >= 1) {
-                        videoInputDevices.forEach((element) => {
-                            const sourceOption = document.createElement('option')
-                            sourceOption.text = element.label
-                            sourceOption.value = element.deviceId
-                            sourceSelect.appendChild(sourceOption)
-                        })
-
-                        sourceSelect.onchange = () => {
-                            selectedDeviceId = sourceSelect.value;
-                        };
-
-                        const sourceSelectPanel = document.getElementById('sourceSelectPanel')
-                        sourceSelectPanel.style.display = 'block'
-                    }
-
-                    codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
-                        if (result) {
-                            console.log(result);
-                            document.getElementById('nisn').textContent = result.text;
-                            playNotificationSound('success');
-
-                            // Send scanned data to Laravel backend
-                            sendDataToLaravel(result.text);
-                        }
-
-                        if (err && !(err instanceof ZXing.NotFoundException)) {
-                            console.error(err);
-                            document.getElementById('nisn').textContent = err;
-                            playNotificationSound('failed');
-                        }
-                    });
-
-                    console.log(`Memulai Scanner dengan Kamera yang memiliki id : ${selectedDeviceId}`)
-                })
-                .catch((err) => {
-                    console.error(err)
-                });
-        });
-
-        function playNotificationSound(type) {
-            const audio = new Audio(`/assets/sound/notification-${type}.mp3`);
-            audio.play();
-        }
-    </script>
-
-
 </body>
-
 </html>

@@ -97,10 +97,10 @@
 
     <script>
         function filterAbsensi() {
-            console.log('data telah diproses ....');
+            console.log('data sedang di diproses ....');
             var tanggal = $('#tanggal-kehadiran').val();
             var kelas = $('#kelas').val();
-            var tingkat = $('#tingkat').val();
+            // var tingkat = $('#tingkat').val();
 
             $.ajax({
                 url: '/filter-absensi',

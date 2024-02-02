@@ -1,43 +1,45 @@
-@extends('layouts.scan')
+<!doctype html>
+<html lang="en">
 
-@section('container')
-    <div class="container text-center d-flex align-items-center flex-column mb-2">
-        <div class="btn-group mb-3">
-            <a href="{{ route('scan_masuk') }}"
-                class="btn btn-primary {{ request()->url() == route('scan_masuk') ? ' active' : '' }}"
-                aria-current="page">Scan Masuk</a>
-            <a href="{{ route('scan_keluar') }}"
-                class="btn btn-primary {{ request()->url() == route('scan_keluar') ? ' active' : '' }}"
-                aria-current="page">Scan Pulang</a>
-        </div>
-        @include('layouts.alert-kehadiran')
-        <div>
-            <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
-        </div>
-        <div id="sourceSelectPanel" class="mb-2 d-flex align-items-center gap-3 mt-2 w-100 justify-content-center"
-            style="display: none;">
-            <label for="sourceSelect">Ubah Sumber Kamera : </label>
-            <select class="form-select" id="sourceSelect" style="max-width: 200px;"
-                title="Detail Spesifikasi Kamera Yang Sedang Digunakan">
-            </select>
-        </div>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ $title }} | Halaman Kehadiran | SIT Gema Nurani</title>
+    @include('layouts.head')
+</head>
 
-        <div class="row text-center d-flex justify-content-between w-100 mb-1">
-            <div class="col-6">Nama Siswa : <span id="nama">--</span></div>
-            <div class="col-6">Kelas : <span id="kelas">--</span></div>
-        </div>
-        <div class="row text-center d-flex justify-content-between w-100">
-            <div class="col-6">Jam Masuk : <span id="jammasuk">--</span></div>
-            <div class="col-6">Jam Pulang : <span id="jampulang">--</span></div>
-        </div>
-        <div class="row text-center d-flex justify-content-between w-100">
-            {{-- <h6 class="col-12">Pesan : <span id="pesan">--</span></h6> --}}
-        </div>
-    </div>
-@endsection
+<body>
+
+    <main class="wrapper" style="padding-top:2em">
+
+        <section class="container" id="demo-content">
+            <h1 class="title">Scan QR Code from Video Camera</h1>
+            <div>
+                <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
+            </div>
+
+            <div id="sourceSelectPanel" style="display:none">
+                <label for="sourceSelect">Change video source:</label>
+                <select id="sourceSelect" style="max-width:400px">
+                </select>
+            </div>
+
+            <label>Result:</label>
+            <ul>
+                <li id="nama">--</li>
+                <li id="kelas">--</li>
+                {{-- <li id="idsiswa">--</li> --}}
+                <li id="jammasuk">--</li>
+                <li id="tanggal">--</li>
+                <li id="pesan">--</li>
+            </ul>
 
 
-@section('script')
+        </section>
+    </main>
+
+    <script type="text/javascript" src="/assets/js/zxing.js"></script>
     <script type="text/javascript">
         window.addEventListener('load', function() {
             let selectedDeviceId;
@@ -79,8 +81,7 @@
                         }
                     });
 
-                    console.log(
-                        `Melanjutkan Scanner QR Code Pada Kamera Yang Memiliki ID : ${selectedDeviceId}`);
+                    console.log(`Melanjutkan Scanner QR Code Pada Kamera Yang Memiliki ID : ${selectedDeviceId}`);
                 })
                 .catch((err) => {
                     console.error(err);
@@ -97,7 +98,7 @@
             var csrf_token = $('meta[name="csrf-token"]').attr('content');
 
             $.ajax({
-                url: '/cek-qr/pulang',
+                url: '/cek-qr/masuk',
                 type: 'POST',
                 data: {
                     qrData: qrData
@@ -114,18 +115,13 @@
                         // console.log(response.masuk)
                         document.getElementById('jammasuk').innerText = response.masuk;
                     }
-                    if (response.pulang) {
-                        // console.log(response.masuk)
-                        document.getElementById('jampulang').innerText = response.pulang;
+                    if (response.tanggal) {
+                        // console.log(response.tanggal)
+                        document.getElementById('tanggal').innerText = response.tanggal;
                     }
                     if (response.pesan) {
                         // console.log(response.pesan)
-                        // document.getElementById('pesan').innerText = response.pesan;
-                        var pesan = document.getElementById('pesan');
-                        if (pesan.style.display === 'none') {
-                            pesan.style.display = 'block';
-                        }
-                        pesan.innerText = response.pesan;
+                        document.getElementById('pesan').innerText = response.pesan;
                     }
                     document.getElementById('nama').innerText = response.siswa.nama_siswa;
                     document.getElementById('kelas').innerText = response.kelas;
@@ -137,4 +133,7 @@
             });
         }
     </script>
-@endsection
+
+</body>
+
+</html>

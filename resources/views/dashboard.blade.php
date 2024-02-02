@@ -81,10 +81,10 @@
                 <div class="card-body">
                     <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
                         <div class="mb-3 mb-sm-0">
-                            <h5 class="card-title fw-semibold">Tingkat Kehadiran Siswa</h5>
+                            <h5 class="card-title fw-semibold">Statistik Aktivitas Kehadiran</h5>
                         </div>
                         <div>
-                            <p>Tingkat Kehadiran Siswa Dalam 7 Hari Terakhir</p>
+                            <p>Statistik Aktivitas Kehadiran Siswa Dalam 7 Hari Terakhir</p>
                         </div>
                     </div>
                     <div id="chart"></div>
@@ -98,7 +98,7 @@
                         <h5 class="card-title fw-semibold">Riwayat Absensi Terakhir</h5>
                     </div>
                     <ul class="timeline-widget mb-0 position-relative mb-n5">
-                    @forelse ($absensi as $a)
+                    @forelse ($absensi->take(5) as $a)
                     <li class="timeline-item d-flex position-relative overflow-hidden">
                         <div class="timeline-time text-dark flex-shrink-0 text-end">{{ $a->tanggal }}</div>
                         <div class="timeline-badge-wrap d-flex flex-column align-items-center">

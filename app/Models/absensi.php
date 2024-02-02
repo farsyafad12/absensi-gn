@@ -17,7 +17,8 @@ class absensi extends Model
     protected $attributes = [
         'jam_masuk' => null,
         'jam_keluar' => null,
-        'keterangan' => null
+        'keterangan' => null,
+        'id_kehadiran' => null
     ];
 
     public function siswa()

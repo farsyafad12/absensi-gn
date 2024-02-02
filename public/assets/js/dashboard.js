@@ -15,7 +15,7 @@ $(document).ready(function () {
   var siswa = '{{ $siswa }}'; // Tambahkan inisialisasi variabel siswa
 
   // Fungsi untuk mendapatkan data dari server
-  $.get('/hitung-absen-pertanggal', function (data) {
+  $.get('/hitung-absen', function (data) {
       console.log(data);
       today = data.today;
 
@@ -40,7 +40,7 @@ $(document).ready(function () {
       // =====================================
       var chartData = {
           series: [
-              { name: "Jumlah Siswa Hadir:", data: [left7, left6, left5, left4, left3, left2, left1, today] },
+              { name: "Jumlah Aktivitas Kehadiran : ", data: [left7, left6, left5, left4, left3, left2, left1, today] },
           ],
           chart: {
               type: "bar",

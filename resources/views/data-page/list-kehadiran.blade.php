@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <p>{{ $tanggal }}</p>
+    <p>Tanggal Terpilih : {{ $tanggal }}</p>
     <table class="table text-nowrap mb-0 align-middle">
         <thead class="text-dark fs-4">
             <tr>
@@ -58,7 +58,8 @@
                         </td>
                         <td class="border-bottom-0">
                             <div class="d-flex align-items-center gap-2">
-                                <span class="badge bg-primary rounded-3 fw-semibold">{{ $item->kehadiran->kehadiran }}</span>
+                                <span
+                                    class="badge bg-primary rounded-3 fw-semibold">{{ $item->kehadiran->kehadiran }}</span>
                             </div>
                         </td>
                         <td class="border-bottom-0">
@@ -114,12 +115,10 @@
         $(document).ready(function() {
             var submitButton = $('#submitBtn');
 
-            // Menambahkan event listener pada #tanggal-kehadiran
             $('#tanggal-kehadiran').on('change', function() {
-                updateTanggalValue(); // Memanggil fungsi untuk memperbarui nilai #tanggal
+                updateTanggalValue();
             });
 
-            // Fungsi untuk memperbarui nilai #tanggal
             function updateTanggalValue() {
                 var tanggal = document.getElementById('tanggal-kehadiran').value;
                 $('#tanggal').val(tanggal);
@@ -137,13 +136,9 @@
                         tanggal: tanggal,
                     },
                     success: function(response) {
-                        $('#nama_siswa').val(response.student.nama_siswa);
+                        // $('#nama_siswa').val(response.student.nama_siswa);
                         $('#id_kelas').val(response.student.id_kelas);
                         $('#id_siswa').val(id_siswa);
-                        submitButton.prop({
-                            'disabled': false,
-                            'type': 'submit'
-                        });
 
                         if (response.kehadiran.length > 0) {
                             var firstKehadiran = response.kehadiran[0];
@@ -151,12 +146,16 @@
                                 .id_kehadiran + '"]').prop('checked', true);
                             $('#jam_masuk').val(firstKehadiran.jam_masuk);
                             updateTanggalValue
-                        (); // Memanggil fungsi untuk memperbarui nilai #tanggal
+                                ();
                             $('#jam_keluar').val(firstKehadiran.jam_keluar);
                             $('#keterangan').val(firstKehadiran.keterangan);
                         } else {
-                            console.log("No attendance records found for the student");
+                            console.log("Belum Ada Riwayat Kehadiran");
                         }
+                        submitButton.prop({
+                            'disabled': false,
+                            'type': 'submit'
+                        });
                     }
                 });
             });
@@ -175,7 +174,6 @@
                     'type': 'button'
                 });
 
-                // Memanggil fungsi untuk memperbarui nilai #tanggal
                 updateTanggalValue();
             });
         });
