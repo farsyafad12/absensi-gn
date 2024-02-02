@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\kelas;
 use App\Models\data_siswa;
 use App\Models\tingkat;
+use App\Models\absensi;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,12 +17,12 @@ class kelasController extends Controller
         $this->middleware('auth');
     }
     public function data_kelas()
-{
-    $judul = 'Daftar Kelas';
-    $kelas = kelas::select('*')->get();
-    $tingkat = tingkat::all();
-    return view('data-page/data-kelas', ['title' => $judul], compact('kelas', 'tingkat'));
-}
+    {
+        $judul = 'Daftar Kelas';
+        $kelas = kelas::select('*')->get();
+        $tingkat = tingkat::all();
+        return view('data-page/data-kelas', ['title' => $judul], compact('kelas', 'tingkat'));
+    }
 
     public function edit_kelas($data_kelas)
     {
@@ -64,9 +65,21 @@ class kelasController extends Controller
         $kelas = kelas::find($data_kelas);
 
         if ($kelas) {
-            $kelas->delete();
-            data_siswa::where('id_kelas', $data_kelas)->delete();
-            return redirect()->route('data_kelas')->with('message', 'Berhasil Menghapus Kelas');
+            try {
+                // Delete related records in tb_siswa
+                data_siswa::where('id_kelas', $kelas->id)->delete();
+
+                // Delete related records in tb_absensi
+                absensi::where('id_kelas', $kelas->id)->delete();
+
+                // Delete the $kelas instance
+                $kelas->delete();
+
+                return redirect()->route('data_kelas')->with('message', 'Berhasil Menghapus Kelas');
+            } catch (\Exception $e) {
+                // Handle any exceptions that may occur during deletion
+                return redirect()->route('data_kelas')->with('message-failed', 'Gagal Menghapus Kelas: ' . $e->getMessage());
+            }
         } else {
             return redirect()->route('data_kelas')->with('message-failed', 'Gagal Menghapus Kelas, Harap Coba Lagi');
         }

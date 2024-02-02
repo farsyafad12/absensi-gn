@@ -13,15 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_siswa', function (Blueprint $table) {
-            $table->id('id_siswa');
-            $table->string('nama_siswa');
-            $table->string('id_kelas');
-            $table->string('nisn');
-            $table->enum('jenis_kelamin', ['Perempuan', 'Laki-Laki']); 
+        Schema::create('tb_tingkat', function (Blueprint $table) {
+            $table->id('id_tingkat');
+            $table->string('nama_tingkat');
             $table->timestamps();
-
-            $table->index(['id_kelas'], 'idx_tb_siswa');
         });
 
         // Tabel tb_kelas
@@ -29,36 +24,46 @@ return new class extends Migration
             $table->id('id_kelas');
             $table->string('wali_kelas');
             $table->string('kelas');
-            $table->string('id_tingkat');
+            $table->unsignedBigInteger('id_tingkat');
             $table->timestamps();
 
-            $table->index('id_tingkat', 'idx_tb_kelas');
+            $table->foreign('id_tingkat')->references('id_tingkat')->on('tb_tingkat')->onDelete('restrict');
         });
 
-        // Tabel tb_tingkat
-        Schema::create('tb_tingkat', function (Blueprint $table) {
-            $table->id('id_tingkat');
-            $table->string('nama_tingkat');
+        // Tabel tb_siswa
+        Schema::create('tb_siswa', function (Blueprint $table) {
+            $table->id('id_siswa');
+            $table->string('nama_siswa');
+            $table->unsignedBigInteger('id_kelas');
+            $table->string('nisn');
+            $table->enum('jenis_kelamin', ['Perempuan', 'Laki-Laki']);
             $table->timestamps();
+
+            $table->foreign('id_kelas')->references('id_kelas')->on('tb_kelas')->onDelete('cascade');
         });
 
         // Tabel tb_kehadiran
         Schema::create('tb_kehadiran', function (Blueprint $table) {
             $table->id('id_kehadiran');
             $table->string('kehadiran');
+            $table->timestamps();
         });
 
         // Tabel tb_absensi
         Schema::create('tb_absensi', function (Blueprint $table) {
             $table->id('id_absensi');
-            $table->string('id_siswa');
-            $table->string('id_kelas');
-            $table->string('id_kehadiran');
+            $table->unsignedBigInteger('id_siswa');
+            $table->unsignedBigInteger('id_kelas');
+            $table->unsignedBigInteger('id_kehadiran');
             $table->date('tanggal');
             $table->time('jam_masuk')->nullable();
             $table->time('jam_keluar')->nullable();
             $table->string('keterangan')->nullable();
-            $table->index(['id_siswa', 'id_kelas', 'id_kehadiran'], 'idx_tb_absensi');
+            $table->timestamps();
+
+            $table->foreign('id_siswa')->references('id_siswa')->on('tb_siswa')->onDelete('restrict');
+            $table->foreign('id_kelas')->references('id_kelas')->on('tb_kelas')->onDelete('cascade');
+            $table->foreign('id_kehadiran')->references('id_kehadiran')->on('tb_kehadiran')->onDelete('restrict');
         });
 
         //add data area

@@ -15,7 +15,6 @@
             <div class="d-flex flex-column align-items-center w-25 mx-auto gap-2 mb-3">
                 <label for="kelas-qr">Kelas :</label>
                 <select class="form-select px-4" name="kelas-qr" id="kelas-qr" onchange="cekData()">
-                    <option selected disabled>--Pilih Kelas--</option>
                     @foreach ($kelasList as $kl)
                         <option value="{{ $kl->id_kelas }}">{{ $kl->kelas }}</option>
                     @endforeach

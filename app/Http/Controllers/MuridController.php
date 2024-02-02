@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\data_siswa;
 use App\Models\kelas;
 use App\Models\tingkat;
+use App\Models\absensi;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -104,6 +105,7 @@ class MuridController extends Controller
         $siswa = data_siswa::find($data_siswa);
 
         if ($siswa) {
+            absensi::where('id_siswa', $siswa->id_siswa)->delete();
             $siswa->delete();
             return redirect()->route('data_siswa')->with('message', 'Berhasil Menghapus Siswa');
         } else {
