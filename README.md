@@ -20,7 +20,7 @@
 
 <p style="color:red">Note : Maaf Jika Ada Kekurangan / Kerentanan Pada Project Ini, Dikarenakan Pembuat Masih Belajar, Jika Ingin Membantu Bisa Pull Request yaa...<p>
 
-<p style="font-style: italic;font-size: 14px;">Terakhir Di Update Pada .. Februari 2024</p>
+<p style="font-style: italic;font-size: 14px;">Terakhir Di Update Pada 3 Februari 2024</p>
 
 <hr>
 
