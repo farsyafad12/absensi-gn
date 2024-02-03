@@ -54,7 +54,7 @@ class kelasController extends Controller
         $kelas->update([
             'wali_kelas' => $request->wali,
             'kelas' => $request->kelas,
-            'tingkat' => $request->id_tingkat,
+            'id_tingkat' => $request->tingkat,
         ]);
 
         return redirect()->route('data_kelas')->with('message', 'Berhasil Update Detail Kelas !');

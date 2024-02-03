@@ -64,7 +64,13 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             var todayDateInput = document.getElementById('tanggal-kehadiran');
-            var today = new Date().toISOString().split('T')[0];
+            // var today = new Date().toISOString().split('T')[0];
+            var today = new Date().toLocaleString('en-GB', {
+                timeZone: 'Asia/Jakarta'
+            }).split(',')[0];
+
+            today = today.split('/').reverse().join('-');
+            
             var submitButton = $('#submitBtn');
             submitButton.prop({
                 'disabled': true,

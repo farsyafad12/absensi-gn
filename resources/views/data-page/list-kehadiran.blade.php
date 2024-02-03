@@ -71,6 +71,8 @@
                         </td>
                     </tr>
                 @endforeach
+            @elseif(isset($absensiData) && $absensiData->isEmpty())
+                <td colspan="8" class="text-center text-danger">Silahkan Pilih Filter Di Atas Terlebih Dahulu</td>
             @endif
 
             @if (isset($siswaData) && !$siswaData->isEmpty())
@@ -106,8 +108,8 @@
                         </td>
                     </tr>
                 @endforeach
-            @elseif(isset($siswaData) && $siswaData->isEmpty())
-                <td colspan="8" class="text-center text-danger">Silahkan Pilih Filter Di Atas Terlebih Dahulu</td>
+                {{-- @elseif(isset($siswaData) && $siswaData->isEmpty())
+                <td colspan="8" class="text-center text-danger">Silahkan Pilih Filter Di Atas Terlebih Dahulu</td> --}}
             @endif
         </tbody>
     </table>
