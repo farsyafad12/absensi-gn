@@ -33,4 +33,4 @@
 
 <h1>Copyright 2024  | Ahnaf Samih Al Farisi  |  All Right Reserved</h1>
 
-<P style="color:red;">Tidak diperbolehkan menggunakan tanpa izin !</P>
+<P style="color:red">Tidak diperbolehkan menggunakan tanpa izin !</P>
