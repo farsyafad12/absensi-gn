@@ -30,3 +30,7 @@
 <hr>
 
 <h2 style="color:cyan">Fitur Dan Preview</h2>
+
+<h1>Copyright 2024  | Ahnaf Samih Al Farisi  |  All Right Reserved</h1>
+
+<P color="red">Tidak diperbolehkan menggunakan tanpa izin !</P>
