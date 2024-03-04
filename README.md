@@ -25,7 +25,7 @@
 
 <h2 style="color:cyan">Catatan Versi</h2>
 
-<h5>V 1.0.1</h5>
+<h4>V.1.0.1</h4>
 <ul>
     <li>Perbaikan Validasi Form</li>
     <li>Menambahkan Halaman Version</li>
@@ -38,7 +38,7 @@
     <li>Fixed Bug Filter Data Siswa</li>
 </ul>
 
-<h5>V 1.0.1</h5>
+<h4>V.1.0.0</h4>
 <p>Rilis Aplikasi Dengan Versi Pertama Dengan Fitur Awal</p>
 
 <hr>
