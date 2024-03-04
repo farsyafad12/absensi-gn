@@ -1,4 +1,4 @@
-<h1 style="color:blue">Absensi Qr Code Berbasis Web Menggunakan Laravel Di SMPIT Gema Nurani V.1.0</h1>
+<h1 style="color:blue">Absensi Qr Code Berbasis Web Menggunakan Laravel Di SMPIT Gema Nurani V.1.0.1</h1>
 
 <h2 style="color:cyan">Instalasi</h2>
 <ul>
@@ -16,19 +16,33 @@
 </ul>
 
 <h3>Login Akun Pengelola</h3>
-- Username : admin@example.com , Password: admin 
+- Username : admin@example.com, Password: admin
 
 <p style="color:red">Note : Maaf Jika Ada Kekurangan / Kerentanan Pada Project Ini, Dikarenakan Pembuat Masih Belajar, Jika Ingin Membantu Bisa Pull Request yaa...<p>
 
-<p style="font-style: italic;font-size: 14px;">Terakhir Di Update Pada 3 Februari 2024</p>
+<p style="font-style: italic;font-size: 14px;">Terakhir Di Update Pada 4 Maret 2024</p>
+<hr>
+
+<h2 style="color:cyan">Catatan Versi</h2>
+
+<h5>V 1.0.1</h5>
+<ul>
+    <li>Perbaikan Validasi Form</li>
+    <li>Menambahkan Halaman Version</li>
+    <li>Update UI Icon</li>
+    <li>Dashboard Update</li>
+    <li>Kehadiran Siswa</li>
+    <li>Akses Pengguna</li>
+    <li>Merapihkan Tampilan UI</li>
+    <li>Menambahkan Halaman Not Found</li>
+    <li>Fixed Bug Filter Data Siswa</li>
+</ul>
+
+<h5>V 1.0.1</h5>
+<p>Rilis Aplikasi Dengan Versi Pertama Dengan Fitur Awal</p>
 
 <hr>
 
+<h2 style="color:cyan">Catatan</h2>
 
-<h2 style="color:cyan">Konfigurasi</h2>
-
-<hr>
-
-<h2 style="color:cyan">Fitur Dan Preview</h2>
-
-<P style="color:red">Copyright 2024  | Ahnaf Samih Al Farisi  |  All Right Reserved  |  Tidak boleh Menggunakan Tanpa Izin</P>
+<P><span style="color:red">Hanya Untuk Digunakan Oleh</span><h5>Organisasi SIT Gema Nurani</h5> Copyright 2024  | Ahnaf Samih Al Farisi  |  All Right Reserved  |  Tidak boleh Menggunakan Tanpa Izin</P>
