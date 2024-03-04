@@ -59,7 +59,7 @@
     <table>
         <tbody>
             <tr>
-                <td><img src="/assets/images/logos/gema-small.png" width="100px" height="100px"></td>
+                <td><img src="/assets/images/logos/logo-small.png" width="100px" height="100px"></td>
                 <td width="100%">
                     <h2 align="center">Laporan Kehadiran Siswa</h2>
                     <h4 align="center">SMPIT Gema Nurani</h4>

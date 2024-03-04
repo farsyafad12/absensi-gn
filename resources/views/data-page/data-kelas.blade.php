@@ -6,7 +6,11 @@
             <div class="card w-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5>Daftar Kelas</h5>
-                    <a href="tambah-kelas" class="btn btn-primary"><i class="ti ti-plus me-2"></i>Tambah Kelas</a>
+                    @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'administrator'))
+                    <a href="{{ route('tambah_kelas') }}" class="btn btn-primary"><i class="ti ti-plus me-2"></i>Tambah Kelas</a>
+                    @else
+                    <button type="button" class="btn btn-primary" disabled><i class="ti ti-plus me-2"></i>Tambah Kelas</button>
+                    @endif
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

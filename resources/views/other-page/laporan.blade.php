@@ -22,7 +22,7 @@
             </div>
             <div class="mt-2">
                 {{-- <a href="result-laporan" class="btn btn-info m-1 w-25"><i class="ti ti-presentation-analytics me-2"></i>Lihat Laporan</a><br /> --}}
-                <button class="btn btn-danger m-1" id="tombol" onclick="generate()" title="Silahkan Isi Filter Di Atas Terlebih Dahulu" disabled><i
+                <button class="btn btn-info m-1" id="tombol" onclick="generate()" title="Silahkan Isi Filter Di Atas Terlebih Dahulu" disabled><i
                         class="ti ti-file me-2"></i>Generate
                     PDF</button><br />
                 {{-- <button type="button" class="btn btn-primary m-1"><i class="ti ti-file me-2"></i>Generate DOC</button> --}}

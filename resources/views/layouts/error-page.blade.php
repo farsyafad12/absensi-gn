@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title }} | Halaman Akun | SIT Gema Nurani</title>
+    <title>Halaman Tidak Ditemukan Atau Tidak Tersedia | SIT Gema Nurani</title>
     @include('layouts.head')
 </head>
 
@@ -18,10 +18,6 @@
                     <div class="col-md-8 col-lg-6 col-xxl-3">
                         <div class="card mb-0 mt-2 mb-2">
                             <div class="card-body p-3">
-                                <div class="text-nowrap logo-img text-center d-block w-100">
-                                    <img src="/assets/images/logos/logo-large.png" width="180"
-                                        alt="logo-gema-nurani">
-                                </div>
                                 @yield('container')
                             </div>
                             @yield('footer')

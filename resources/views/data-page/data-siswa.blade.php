@@ -10,7 +10,7 @@
                     <select name="kelas" id="kelas" class="form-select" onchange="filterData()">
                         <option value="" selected>-- Semua Kelas --</option>
                         @foreach ($kelasList as $kl)
-                        <option value="{{ $kl->kelas }}">{{ $kl->kelas }}</option>
+                            <option value="{{ $kl->kelas }}">{{ $kl->kelas }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -18,7 +18,7 @@
                     <select name="tingkat" id="tingkat" class="form-select" onchange="filterData()">
                         <option value="" selected>-- Semua Tingkat --</option>
                         @foreach ($tingkat as $tk)
-                        <option value="{{ $tk->nama_tingkat }}">{{ $tk->nama_tingkat }}</option>
+                            <option value="{{ $tk->nama_tingkat }}">{{ $tk->nama_tingkat }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -32,7 +32,13 @@
             <div class="card w-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5>Daftar Siswa</h5>
-                    <a href="{{ route('tambah_siswa') }}" class="btn btn-primary"><i class="ti ti-plus me-2"></i>Tambah Siswa</a>
+                    @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'administrator'))
+                        <a href="{{ route('tambah_siswa') }}" class="btn btn-primary"><i class="ti ti-plus me-2"></i>Tambah
+                            Siswa</a>
+                    @else
+                        <button type="button" class="btn btn-primary" disabled><i class="ti ti-plus me-2"></i>Tambah
+                            Siswa</button>
+                    @endif
                 </div>
                 <div class="card-body">
                     <div class="group w-100 mb-4">
@@ -93,7 +99,8 @@
                                                     method="post">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <a href="{{ route('siswa_edit', $s->id_siswa) }}" class="btn btn-warning m-1">Edit</a>
+                                                    <a href="{{ route('siswa_edit', $s->id_siswa) }}"
+                                                        class="btn btn-warning m-1">Edit</a>
                                                     @if (Auth::check() && Auth::user()->role == 'administrator')
                                                         <button type="submit" class="btn btn-danger m-1"
                                                             onclick="return confirmDelete()">Delete</button>
@@ -110,7 +117,8 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center text-danger">Tidak Ada Data Siswa Yang Tersedia</td>
+                                        <td colspan="6" class="text-center text-danger">Tidak Ada Data Siswa Yang
+                                            Tersedia</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -122,6 +130,6 @@
     </div>
 @endsection
 @section('inlinefile')
-<script src="/assets/js/sidebarmenu.js"></script>
-<script src="/assets/js/searchmenu.js"></script>
+    <script src="/assets/js/sidebarmenu.js"></script>
+    <script src="/assets/js/searchmenu.js"></script>
 @endsection

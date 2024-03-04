@@ -18,7 +18,7 @@
               <a href="absen" class="btn btn-primary d-flex justify-content-between gap-2 align-items-center"><i class="ti ti-scan"></i>Absen</a>
               <li class="nav-item dropdown">
                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="detail-user" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="/assets/images/logos/gema-small.png" alt="logo-pengguna" width="35" height="35" class="rounded-circle">
+                  <img src="/assets/images/logos/admin-icon.png" alt="logo-pengguna" width="35" height="35" class="rounded-circle">
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="detail-user">
                   <div class="message-body">
@@ -28,14 +28,14 @@
                     </div>
                     <div class="d-flex align-items-center gap-2 dropdown-item user-select-none">
                       <i class="ti ti-server fs-6"></i>
-                      <p class="mb-0 fs-3">{{Auth::user()->role}}</p>
+                      <p class="mb-0 fs-3 text-capitalize">{{Auth::user()->role}}</p>
                     </div>
                     <!--
                     <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-list-check fs-6"></i>
                       <p class="mb-0 fs-3">My Task</p>
                     </a>-->
-                    <a href="{{route('actionlogout')}}" class="btn btn-outline-danger mx-3 mt-2 d-block">Logout</a>
+                    <a href="{{route('actionlogout')}}" class="btn btn-outline-danger mx-3 mt-2 d-block">Keluar</a>
                   </div>
                 </div>
               </li>

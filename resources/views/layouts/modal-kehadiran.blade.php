@@ -6,8 +6,8 @@
                 @method('PUT')
                 <input type="hidden" name="id_siswa" id="id_siswa" value="" required>
                 <input type="hidden" name="id_kelas" id="id_kelas" value="" required>
-                {{-- <input type="hidden" name="nama_siswa" id="nama_siswa" value="" required> --}}
                 <input type="hidden" name="tanggal" id="tanggal" value="" required>
+                {{-- <input type="hidden" name="nama_siswa" id="nama_siswa" value="" required> --}}
 
 
 

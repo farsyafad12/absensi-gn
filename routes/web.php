@@ -10,6 +10,7 @@ use App\Http\Controllers\kelasController;
 use App\Http\Controllers\tingkatController;
 use App\Http\Controllers\generatorqrcodeController;
 use App\Http\Controllers\scanqrController;
+use App\Http\Controllers\OtherController;
 // use App\Http\Controllers\QRController;
 // use App\Http\Controllers\testController;
 // use PHPUnit\Event\Code\Test;
@@ -25,8 +26,8 @@ use App\Http\Controllers\scanqrController;
 |--------------------------------------------------------------------------
 */
 
-
-
+// Version Area
+Route::get('version', [OtherController::class, 'version'])->name('version');
 
 // get data area
 Route::get('/hitung-absen', [SiswaController::class, 'tampilkanDataAbsensi'])->name('data_absen_pertanggal');

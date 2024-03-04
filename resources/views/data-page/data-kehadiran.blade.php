@@ -7,7 +7,7 @@
             <h5 class="card-title fw-semibold mb-2">Filter Data Siswa</h5>
             <p class="mb-4">Mencari Data Siswa Lebih Mudah Dengan Filter</p>
             <div class="container row">
-                <div class="col-6">
+                <div class="col-8">
                     <select name="kelas" id="kelas" class="form-select" onchange="filterkelas()">
                         <option value="" selected>-- Semua Kelas --</option>
                         @foreach ($kelasList as $kl)
@@ -15,14 +15,14 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-6">
+                {{-- <div class="col-6">
                     <select name="tingkat" id="tingkat" class="form-select" onchange="filtertingkat()">
                         <option value="" selected>-- Semua Tingkat --</option>
                         @foreach ($tingkat as $tk)
                             <option value="{{ $tk->id_tingkat }}">{{ $tk->nama_tingkat }}</option>
                         @endforeach
                     </select>
-                </div>
+                </div> --}}
                 <div class="text-danger fs-4 mt-2" id="pesan">
                 </div>
                 <div class="col-4 mt-3">

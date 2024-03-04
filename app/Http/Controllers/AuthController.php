@@ -96,6 +96,10 @@ class AuthController extends Controller
     //Dasboard Area
     public function index()
     {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
         $judul = 'Dashboard Absensi Siswa';
         $siswa = data_siswa::count();
         $kelas = kelas::count();

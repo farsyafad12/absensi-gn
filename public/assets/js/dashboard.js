@@ -10,16 +10,13 @@ function getLast7Days() {
 }
 
 $(document).ready(function () {
-  // Inisialisasi variabel today
   var today, left1 = 0, left2 = 0, left3 = 0, left4 = 0, left5 = 0, left6 = 0, left7 = 0;
-  var siswa = '{{ $siswa }}'; // Tambahkan inisialisasi variabel siswa
+  var siswa = '{{ $siswa }}';
 
-  // Fungsi untuk mendapatkan data dari server
   $.get('/hitung-absen', function (data) {
       console.log(data);
       today = data.today;
 
-      // Ganti 'siswa' menjadi 'data.siswa' untuk mendapatkan nilai siswa dari response
       if (data.siswa) siswa = data.siswa;
       if (data.left1) left1 = data.left1;
       if (data.left2) left2 = data.left2;
@@ -29,18 +26,13 @@ $(document).ready(function () {
       if (data.left6) left6 = data.left6;
       if (data.left7) left7 = data.left7;
 
-      // Memanggil fungsi untuk membuat dan merender chart dengan nilai today yang telah diperbarui
       buatDanRenderChart(today, siswa);
   });
 
-  // Fungsi untuk membuat dan merender chart
   function buatDanRenderChart(today, siswa) {
-      // =====================================
-      // Profit
-      // =====================================
       var chartData = {
           series: [
-              { name: "Jumlah Aktivitas Kehadiran : ", data: [left7, left6, left5, left4, left3, left2, left1, today] },
+              { name: "Jumlah Aktivitas Kehadiran ", data: [left7, left6, left5, left4, left3, left2, left1, today] },
           ],
           chart: {
               type: "bar",
@@ -51,7 +43,7 @@ $(document).ready(function () {
               fontFamily: 'inherit',
               sparkline: { enabled: false },
           },
-          colors: ["#5D87FF", "#49BEFF"],
+          colors: ["#206D47", "#24AD69"],
           plotOptions: {
               bar: {
                   horizontal: false,

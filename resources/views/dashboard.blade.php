@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ $siswa }} Siswa</h5>
                     <p class="card-text">Jumlah Semua Siswa</p>
-                    <a href="data-siswa" class="btn btn-secondary">Lihat Semua Siswa</a>
+                    <a href="data-siswa" class="btn btn-info">Lihat Semua Siswa</a>
                 </div>
             </div>
         </div>
@@ -25,7 +25,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ $kelas }} Kelas</h5>
                     <p class="card-text">Jumlah Semua Kelas</p>
-                    <a href="data-kelas" class="btn btn-secondary">Lihat Semua Kelas</a>
+                    <a href="data-kelas" class="btn btn-info">Lihat Semua Kelas</a>
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ $user }} Petugas</h5>
                     <p class="card-text">Jumlah Semua Petugas</p>
-                    <a href="setting" class="btn btn-secondary">Lihat Semua Petugas</a>
+                    <a href="setting" class="btn btn-info">Lihat Semua Petugas</a>
                 </div>
             </div>
         </div>
@@ -84,7 +84,7 @@
                             <h5 class="card-title fw-semibold">Statistik Aktivitas Kehadiran</h5>
                         </div>
                         <div>
-                            <p>Statistik Aktivitas Kehadiran Siswa Dalam 7 Hari Terakhir</p>
+                            <p>Aktivitas Kehadiran Siswa Dalam 7 Hari Terakhir</p>
                         </div>
                     </div>
                     <div id="chart"></div>
@@ -98,17 +98,23 @@
                         <h5 class="card-title fw-semibold">Riwayat Absensi Terakhir</h5>
                     </div>
                     <ul class="timeline-widget mb-0 position-relative mb-n5">
-                    @forelse ($absensi->take(5) as $a)
-                    <li class="timeline-item d-flex position-relative overflow-hidden">
-                        <div class="timeline-time text-dark flex-shrink-0 text-end">{{ $a->tanggal }}</div>
-                        <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                            <span class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>                         
-                        </div>
-                        <div class="timeline-desc fs-3 text-dark mt-n1">{{ $a->siswa->nama_siswa }}</div>
-                    </li>
-                    @empty
-                        <li class="text-center text-danger user-select-none">Tidak Ada Riwayat Terbaru</li>
-                    @endforelse
+                        @forelse ($absensi->take(5) as $key => $a)
+                            <li class="timeline-item d-flex position-relative overflow-hidden">
+                                <div class="timeline-time text-dark flex-shrink-0 text-end">{{ $a->tanggal }}</div>
+                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
+                                    @if ($key < 4)
+                                        <span class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
+                                        <span class="timeline-badge-border d-block flex-shrink-0"></span>
+                                    @endif
+                                    <span class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
+                                </div>
+                                <div class="timeline-desc fs-3 text-dark mt-n1 text-capitalize">{{ $a->siswa->nama_siswa }}
+                                </div>
+                            </li>
+                        @empty
+                            <li class="text-center text-danger user-select-none">Tidak Ada Riwayat Terbaru</li>
+                        @endforelse
+
                     </ul>
                 </div>
             </div>

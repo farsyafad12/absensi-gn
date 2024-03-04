@@ -63,53 +63,63 @@
                             </div>
                         </td>
                         <td class="border-bottom-0">
-                            <h6>{{ $item->keterangan }}</h6>
+                            <h6>{{ Illuminate\Support\Str::limit($item->keterangan, 15) }}</h6>
                         </td>
                         <td class="border-bottom-0">
-                            <button type="button" class="btn btn-warning m-1 editBtn"
-                                value="{{ $item->id_siswa }}">Ubah Status</button>
+                            @if (Auth::check() && Auth::user()->role == 'administrator')
+                                <button type="button" class="btn btn-warning m-1 editBtn"
+                                    value="{{ $item->id_siswa }}">Ubah Status</button>
+                            @else
+                                <button type="button" class="btn btn-warning m-1 editBtn" disabled>Ubah Status</button>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
-            @elseif(isset($absensiData) && $absensiData->isEmpty())
-                <td colspan="8" class="text-center text-danger">Silahkan Pilih Filter Di Atas Terlebih Dahulu</td>
-            @endif
-
-            @if (isset($siswaData) && !$siswaData->isEmpty())
-                @foreach ($siswaData as $item)
-                    <tr>
-                        <td class="border-bottom-0">
-                            <h6>{{ $loop->iteration }}</h6>
-                        </td>
-                        <td class="border-bottom-0">
-                            <h6 class="fw-semibold mb-1">{{ $item->nama_siswa }}</h6>
-                            <span class="fw-normal">{{ $item->kelas->tingkat->nama_tingkat }}</span>
-                        </td>
-                        <td class="border-bottom-0">
-                            <h6 class="mb-0 ">{{ $item->kelas->kelas }}</h6>
-                        </td>
-                        <td class="border-bottom-0">
-                            <h6 class="mb-0 fw-normal text-danger">--</h6>
-                        </td>
-                        <td class="border-bottom-0">
-                            <h6 class="mb-0 fw-normal text-danger">--</h6>
-                        </td>
-                        <td class="border-bottom-0">
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="badge bg-danger rounded-3 fw-semibold">Alpha</span>
-                            </div>
-                        </td>
-                        <td class="border-bottom-0">
-                            <h6 class="mb-0 fw-normal text-danger">--</h6>
-                        </td>
-                        <td class="border-bottom-0">
-                            <button type="button" class="btn btn-warning m-1 editBtn"
-                                value="{{ $item->id_siswa }}">Ubah Status</button>
-                        </td>
-                    </tr>
-                @endforeach
-                {{-- @elseif(isset($siswaData) && $siswaData->isEmpty())
+                {{-- @elseif(isset($absensiData) && $absensiData->isEmpty())
                 <td colspan="8" class="text-center text-danger">Silahkan Pilih Filter Di Atas Terlebih Dahulu</td> --}}
+            @else
+                @if (isset($siswaData) && !$siswaData->isEmpty())
+                    @foreach ($siswaData as $item)
+                        <tr>
+                            <td class="border-bottom-0">
+                                <h6>{{ $loop->iteration }}</h6>
+                            </td>
+                            <td class="border-bottom-0">
+                                <h6 class="fw-semibold mb-1">{{ $item->nama_siswa }}</h6>
+                                <span class="fw-normal">{{ $item->kelas->tingkat->nama_tingkat }}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <h6 class="mb-0 ">{{ $item->kelas->kelas }}</h6>
+                            </td>
+                            <td class="border-bottom-0">
+                                <h6 class="mb-0 fw-normal text-danger">--</h6>
+                            </td>
+                            <td class="border-bottom-0">
+                                <h6 class="mb-0 fw-normal text-danger">--</h6>
+                            </td>
+                            <td class="border-bottom-0">
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge bg-danger rounded-3 fw-semibold">Alpha</span>
+                                </div>
+                            </td>
+                            <td class="border-bottom-0">
+                                <h6 class="mb-0 fw-normal text-danger">--</h6>
+                            </td>
+                            <td class="border-bottom-0">
+                                @if (Auth::check() && Auth::user()->role == 'administrator')
+                                    <button type="button" class="btn btn-warning m-1 editBtn"
+                                        value="{{ $item->id_siswa }}">Ubah Status</button>
+                                @else
+                                    <button type="button" class="btn btn-warning m-1 editBtn" disabled>Ubah
+                                        Status</button>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <td colspan="8" class="text-center text-danger">Silahkan Pilih Filter Di Atas Terlebih Dahulu
+                    </td>
+                @endif
             @endif
         </tbody>
     </table>
@@ -141,6 +151,7 @@
                         // $('#nama_siswa').val(response.student.nama_siswa);
                         $('#id_kelas').val(response.student.id_kelas);
                         $('#id_siswa').val(id_siswa);
+                        $('#tanggal').val(tanggal);
 
                         if (response.kehadiran.length > 0) {
                             var firstKehadiran = response.kehadiran[0];
@@ -152,7 +163,7 @@
                             $('#jam_keluar').val(firstKehadiran.jam_keluar);
                             $('#keterangan').val(firstKehadiran.keterangan);
                         } else {
-                            console.log("Belum Ada Riwayat Kehadiran");
+                            console.log("Belum Ada Riwayat Kehadiran Dari Siswa Ini");
                         }
                         submitButton.prop({
                             'disabled': false,
