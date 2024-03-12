@@ -20,7 +20,7 @@
                         <div class="card mb-0 mt-2 mb-2">
                             <div class="card-body p-3">
                                 <div class="text-nowrap logo-img text-center d-block w-100 mb-3">
-                                    <img src="/assets/images/logos/gema-large.png" width="180"
+                                    <img src="/assets/images/logos/logo-large.png" width="180"
                                         alt="logo-gema-nurani">
                                 </div>
                                 @yield('container')

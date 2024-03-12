@@ -37,47 +37,49 @@
             </tr>
         </thead>
         <tbody>
-            @if (isset($absensiData) && !$absensiData->isEmpty())
-                @foreach ($absensiData as $item)
-                    <tr>
-                        <td class="border-bottom-0">
-                            <h6>{{ $loop->iteration }}</h6>
-                        </td>
-                        <td class="border-bottom-0">
-                            <h6 class="fw-semibold mb-1">{{ $item->siswa->nama_siswa }}</h6>
-                            <span class="fw-normal">{{ $item->kelas->tingkat->nama_tingkat }}</span>
-                        </td>
-                        <td class="border-bottom-0">
-                            <h6>{{ $item->kelas->kelas }}</h6>
-                        </td>
-                        <td class="border-bottom-0">
-                            <h6>{{ $item->jam_masuk }}</h6>
-                        </td>
-                        <td class="border-bottom-0">
-                            <h6>{{ $item->jam_keluar }}</h6>
-                        </td>
-                        <td class="border-bottom-0">
-                            <div class="d-flex align-items-center gap-2">
-                                <span
-                                    class="badge bg-primary rounded-3 fw-semibold">{{ $item->kehadiran->kehadiran }}</span>
-                            </div>
-                        </td>
-                        <td class="border-bottom-0">
-                            <h6>{{ Illuminate\Support\Str::limit($item->keterangan, 15) }}</h6>
-                        </td>
-                        <td class="border-bottom-0">
-                            @if (Auth::check() && Auth::user()->role == 'administrator')
-                                <button type="button" class="btn btn-warning m-1 editBtn"
-                                    value="{{ $item->id_siswa }}">Ubah Status</button>
-                            @else
-                                <button type="button" class="btn btn-warning m-1 editBtn" disabled>Ubah Status</button>
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
-                {{-- @elseif(isset($absensiData) && $absensiData->isEmpty())
+            @if ((isset($absensiData) && !$absensiData->isEmpty()) || (isset($siswaData) && !$siswaData->isEmpty()))
+                @if (isset($absensiData) && !$absensiData->isEmpty())
+                    @foreach ($absensiData as $item)
+                        <tr>
+                            <td class="border-bottom-0">
+                                <h6>{{ $loop->iteration }}</h6>
+                            </td>
+                            <td class="border-bottom-0">
+                                <h6 class="fw-semibold mb-1">{{ $item->siswa->nama_siswa }}</h6>
+                                <span class="fw-normal">{{ $item->kelas->tingkat->nama_tingkat }}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <h6>{{ $item->kelas->kelas }}</h6>
+                            </td>
+                            <td class="border-bottom-0">
+                                <h6>{{ $item->jam_masuk }}</h6>
+                            </td>
+                            <td class="border-bottom-0">
+                                <h6>{{ $item->jam_keluar }}</h6>
+                            </td>
+                            <td class="border-bottom-0">
+                                <div class="d-flex align-items-center gap-2">
+                                    <span
+                                        class="badge bg-primary rounded-3 fw-semibold">{{ $item->kehadiran->kehadiran }}</span>
+                                </div>
+                            </td>
+                            <td class="border-bottom-0">
+                                <h6>{{ Illuminate\Support\Str::limit($item->keterangan, 15) }}</h6>
+                            </td>
+                            <td class="border-bottom-0">
+                                @if (Auth::check() && Auth::user()->role == 'administrator')
+                                    <button type="button" class="btn btn-warning m-1 editBtn"
+                                        value="{{ $item->id_siswa }}">Ubah Status</button>
+                                @else
+                                    <button type="button" class="btn btn-warning m-1 editBtn" disabled>Ubah
+                                        Status</button>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                    {{-- @elseif(isset($absensiData) && $absensiData->isEmpty())
                 <td colspan="8" class="text-center text-danger">Silahkan Pilih Filter Di Atas Terlebih Dahulu</td> --}}
-            @else
+                @endif
                 @if (isset($siswaData) && !$siswaData->isEmpty())
                     @foreach ($siswaData as $item)
                         <tr>
@@ -116,10 +118,12 @@
                             </td>
                         </tr>
                     @endforeach
-                @else
+                @endif
+            @else
+                <tr>
                     <td colspan="8" class="text-center text-danger">Silahkan Pilih Filter Di Atas Terlebih Dahulu
                     </td>
-                @endif
+                </tr>
             @endif
         </tbody>
     </table>
